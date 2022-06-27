@@ -3,8 +3,6 @@
 #环境变量配置
 cat environment_variable >>~/.bashrc
 source ~/.bashrc
-export nvme_info
-export sata_info
 if [ $? = 0 ]; then
   #依赖包安装
   install_fio

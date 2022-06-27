@@ -26,7 +26,22 @@ check_pcie_info() {
 }
 echo "请校验nvme硬盘信息："
 check_nvme_info
+if [ $? = 0 ]; then
+    echo "nvme info,PASS!"
+else
+    echo "nvme info,FAIL!"
+fi
 echo "请校验sata硬盘信息："
 check_sata_info
+if [ $? = 0 ]; then
+    echo "sata info,PASS!"
+else
+    echo "sata info,FAIL!"
+fi
 echo "请校验nvme_pcie速率信息："
 check_pcie_info
+if [ $? = 0 ]; then
+    echo "pcie info,PASS!"
+else
+    echo "pcie info,FAIL!"
+fi

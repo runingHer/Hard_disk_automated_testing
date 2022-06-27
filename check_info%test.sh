@@ -27,21 +27,21 @@ check_pcie_info() {
 echo "请校验nvme硬盘信息："
 check_nvme_info
 if [ $? = 0 ]; then
-    echo "nvme info,PASS....................................!"
+    echo -e "\033[\e[1;32m get nvme info success.........................................................please verify the result! \033[0m"
 else
-    echo "nvme info,FAIL....................................!"
+    echo -e "\033[31m get nvme info failed!.........................................................please check! \033[0m"
 fi
 echo "请校验sata硬盘信息："
 check_sata_info
 if [ $? = 0 ]; then
-    echo "sata info,PASS....................................!"
+    echo -e "\033[\e[1;32m get sata info success.........................................................please verify the result! \033[0m"
 else
-    echo "sata info,FAIL....................................!"
+    echo -e "\033[31m get sata info failed!.........................................................please check! \033[0m"
 fi
 echo "请校验nvme_pcie速率信息："
 check_pcie_info
 if [ $? = 0 ]; then
-    echo "pcie info,PASS....................................!"
+    echo -e "\033[\e[1;32m get pcie info success.........................................................please verify the result! \033[0m"
 else
-    echo "pcie info,FAIL....................................!"
+    echo -e "\033[31m get pcie info failed!.........................................................please check! \033[0m"
 fi

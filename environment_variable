@@ -7,6 +7,3 @@ install_fio() {
   yum install -y sysstat || apt install -y sysstat
   yum install smartmontools || apt install smartmontools
 }
-export nvme_info
-export sata_info
-export install_fio

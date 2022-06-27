@@ -5,6 +5,7 @@ install_fio() {
   yum install -y nvme*
   yum install -y fio || apt install fio
   yum install -y sysstat || apt install -y sysstat
+  yum install smartmontools || apt install smartmontools
 }
 export nvme_info
 export sata_info

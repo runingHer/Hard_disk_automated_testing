@@ -1,10 +1,8 @@
 #!/bin/bash
 #硬盘测试开始
 #环境变量配置
-cat environment_variable >> /etc/profile
-source /etc/profile
-echo "source /etc/profile" >> ~/.bashrc
-source ~/.bashrc
+cp environment_variable.sh /etc/profile.d/
+source /etc/profile.d/environment_variable.sh
 if [ $? = 0 ]; then
   #依赖包安装
   install_fio

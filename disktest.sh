@@ -1,7 +1,9 @@
 #!/bin/bash
 #硬盘测试开始
 #环境变量配置
-cat environment_variable >>~/.bashrc
+cat environment_variable >> /etc/profile
+source /etc/profile
+echo "source /etc/profile" >> ~/.bashrc
 source ~/.bashrc
 if [ $? = 0 ]; then
   #依赖包安装

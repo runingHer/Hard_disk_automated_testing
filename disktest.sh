@@ -5,7 +5,7 @@ cp environment_variable.sh /etc/profile.d/
 source /etc/profile.d/environment_variable.sh
 if [ $? = 0 ]; then
   #依赖包安装
-  install_fio
+  install_all
   
   #校验OS中硬盘信息脚本
   bash check_info%test.sh
@@ -53,6 +53,9 @@ if [ $? = 0 ]; then
   
   #提取fio测试结果
   bash get_log%fio.sh
+  
+  #删除环境变量及安装包
+  delete_all
   echo -e "\033[\e[1;32m The hard disk test is completed!.........................................................please verify the result! \033[0m"
   echo -e "\033[\e[1;32m The hard disk test is completed!.........................................................please verify the result! \033[0m" >>disktest/disk_result
 else

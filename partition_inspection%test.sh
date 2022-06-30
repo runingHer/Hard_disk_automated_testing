@@ -23,18 +23,17 @@ nvme_mkfs() {
 }
 sata_mount() {
   for i in $(seq 1 ${2}); do
-      mount /dev/${1}${i} ${path}/${i}
+    mount /dev/${1}${i} ${path}/${i}
   done
 }
 nvme_mount() {
   for i in $(seq 1 ${2}); do
-      mount /dev/${1}p${i} ${path}/${i}
+    mount /dev/${1}p${i} ${path}/${i}
   done
 }
 disk_partition() {
   for disk in $1; do
     num=$(fdisk -l /dev/${disk} | grep "^/dev/${disk}" | wc -l)
-    create_mount_path $num
     echo ${disk} >>${path}/disk_name
     if [ $num = 0 ]; then
       #建立分区表
@@ -79,11 +78,13 @@ disk_partition() {
 while (true); do
   read -p "需要对那种类型磁盘进行分区操作(sata/nvme)：" DISK
   if [ $DISK = sata ]; then
+    create_mount_path $sata_total
     for traverse in ${sata_info}; do
       disk_partition ${sata_info} sata_mkfs sata_mount
     done
     break
   elif [ $DISK = nvme ]; then
+    create_mount_path $nvme_total
     for traverse in ${nvme_info}; do
       disk_partition ${traverse} nvme_mkfs nvme_mount
     done

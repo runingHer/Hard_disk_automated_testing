@@ -77,10 +77,10 @@ disk_partition() {
 while (true); do
   read -p "需要对那种类型磁盘进行分区操作(sata/nvme)：" DISK
   if [ $DISK = sata ]; then
-    disk_partition ${sata_info} ${sata_mkfs} ${sata_mount}
+    disk_partition ${sata_info} sata_mkfs sata_mount
     break
   elif [ $DISK = nvme ]; then
-    disk_partition ${nvme_info} ${nvme_mkfs} ${nvme_mount}
+    disk_partition ${nvme_info} nvme_mkfs nvme_mount
     break
   else
     echo -e "\033[31m 请输入正确的磁盘类型，如sata/nvme.........................................................please check! \033[0m"

@@ -2,6 +2,8 @@
 #设置环境变量及安装包
 export nvme_info=$(nvme list | grep "nvme" | awk '{print $1}' | awk -F "/" '{print $NF}')
 export sata_info=$(lsscsi | grep "/dev/sd" | awk -F "/" '{print $NF}')
+export nvme_total=$(expr $(nvme list | grep "nvme" | awk '{print $1}' | awk -F "/" '{print $NF}' | wc -l) \* 3)
+export sata_total=$(expr $(lsscsi | grep "/dev/sd" | awk -F "/" '{print $NF}' | wc -l) \* 3)
 install_all() {
   yum install -y libaio-devel || apt install -y libaio-dev
   yum install -y nvme*

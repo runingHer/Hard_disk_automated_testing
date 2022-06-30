@@ -3,9 +3,11 @@
 #获取路径
 path=disktest/disk_parted
 #建立挂载点
-for i in $(seq 1 ${mount_total_num}); do
-  mkdir -p ${path}/${i}
-done
+create_mount_path() {
+  for i in $(seq 1 ${1}); do
+    mkdir -p ${path}/${i}
+  done
+}
 #磁盘分区创建及挂载
 sata_mkfs() {
   for i in $(seq 1 ${2}); do
@@ -32,6 +34,7 @@ nvme_mount() {
 disk_partition() {
   for disk in $1; do
     num=$(fdisk -l /dev/${disk} | grep "^/dev/${disk}" | wc -l)
+    create_mount_path $num
     echo ${disk} >>${path}/disk_name
     if [ $num = 0 ]; then
       #建立分区表

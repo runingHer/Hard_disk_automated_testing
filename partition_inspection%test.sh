@@ -1,3 +1,19 @@
+#!/bin/bash
+#磁盘自动分区测试脚本
+#获取路径
+path=disktest/disk_parted
+#建立挂载点
+sata_mount_path() {
+  for i in $(seq 1 3); do
+    mkdir -p ${path}/${1}/${i}
+  done
+}
+nvme_mount_path() {
+  for i in $(seq 1 3); do
+    mkdir -p ${path}/${1}/${i}
+  done
+}
+#磁盘分区创建及挂载
 sata_mkfs() {
   for i in $(seq 1 ${2}); do
     mkfs.xfs -f /dev/${1}${i}
@@ -66,14 +82,14 @@ disk_partition() {
 while (true); do
   read -p "需要对那种类型磁盘进行分区操作(sata/nvme)：" DISK
   if [ $DISK = sata ]; then
-    sata_mount_path ${sata_total} ${sata_info}
     for traverse in ${sata_info}; do
+      sata_mount_path ${traverse}
       disk_partition ${traverse} sata_mkfs sata_mount
     done
     break
   elif [ $DISK = nvme ]; then
-    nvme_mount_path ${nvme_total} ${nvme_info}
     for traverse in ${nvme_info}; do
+      nvme_mount_path ${traverse}
       disk_partition ${traverse} nvme_mkfs nvme_mount
     done
     break

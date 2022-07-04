@@ -50,6 +50,7 @@ while (true); do
     if [ $? = 0 ]; then
       echo -e "\033[\e[1;32m performance test completed！.........................................................PASS! \033[0m"
       echo -e "\033[\e[1;32m performance test completed！.........................................................PASS! \033[0m" >> disktest/disk_result.log
+    fi
     break
   else
     echo "请输入正确的硬盘类型"

@@ -33,7 +33,6 @@ nvme_test() {
     fi
   done
 }
-install_fio
 #执行测试&输出测试结果
 while (true); do
   #交互

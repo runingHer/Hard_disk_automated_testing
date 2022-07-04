@@ -1,4 +1,7 @@
 #!/bin/bash
+#iozone文件性能读写测试
+path=disktest/disk_iozone_performance
+mkdir -p ${path}
 #解压工具包
 decompress() {
   if [ ! -d iozone3_430 ]; then
@@ -14,7 +17,7 @@ compile() {
 iozone_test() {
   for ((i = 1; i <= 3; i++)); do
     for size in {16g,8g,4g}; do
-      ./iozone -a -i 0 -i 1 -i 2 -r 16m -s ${size} >>${size}_Iozone.log
+      ./iozone -a -i 0 -i 1 -i 2 -r 16m -s ${size} >> ../../../${path}/${size}_Iozone.log
       sleep 5
     done
   done
@@ -22,12 +25,12 @@ iozone_test() {
 #执行测试&输出测试结果
 decompress
 compile
-echo "正在进行iozone测试"
+echo "正在进行iozone测试,请不要终止程序........"
 iozone_test
 if [ $? = 0 ]; then
-  echo -e "\033[\e[1;32m performance test completed！.........................................................PASS! \033[0m"
-  echo -e "\033[\e[1;32m performance test completed！.........................................................PASS! \033[0m" >> disktest/disk_result
+  echo -e "\033[\e[1;32m performance test completed.........................................................PASS! \033[0m"
+  echo -e "\033[\e[1;32m performance test completed.........................................................PASS! \033[0m" >> disktest/disk_result
 else
-  echo -e "\033[31m performance test fail！.........................................................please check! \033[0m"
-  echo -e "\033[31m performance test fail！.........................................................please check! \033[0m" >> disktest/disk_result
+  echo -e "\033[31m performance test fail.........................................................please check! \033[0m"
+  echo -e "\033[31m performance test fail.........................................................please check! \033[0m" >> disktest/disk_result
 fi

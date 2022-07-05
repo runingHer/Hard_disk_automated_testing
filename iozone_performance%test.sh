@@ -29,8 +29,8 @@ echo "正在进行iozone测试,请不要终止程序........"
 iozone_test
 if [ $? = 0 ]; then
   echo -e "\033[\e[1;32m performance test completed.........................................................PASS! \033[0m"
-  echo -e "\033[\e[1;32m performance test completed.........................................................PASS! \033[0m" >> disktest/disk_result
+  echo -e "\033[\e[1;32m performance test completed.........................................................PASS! \033[0m" >> ../../../disktest/disk_result
 else
   echo -e "\033[31m performance test fail.........................................................please check! \033[0m"
-  echo -e "\033[31m performance test fail.........................................................please check! \033[0m" >> disktest/disk_result
+  echo -e "\033[31m performance test fail.........................................................please check! \033[0m" >> ../../../disktest/disk_result
 fi

@@ -3,26 +3,13 @@
 path=disktest/disk_info
 mkdir -p $path
 lsscsi >${path}/lsscsi.log
-#获取nvme_smart信息
-check_nvme_info() {
-  declare -p nvme_info &>/dev/null
+#获取硬盘smart信息
+check_info() {
+  declare -p $1 &>/dev/null
   if [ $? = 0 ]; then
-    for nvme in ${nvme_info}; do
-      smartctl -i /dev/${nvme} >${path}/${nvme}.log
-      cat ${path}/${nvme}.log
-    done
-    echo -e "\033[\e[1;32m get nvme info success.........................................................please verify the result! \033[0m"
-  else
-    echo -e "\033[31m get nvme info failed.........................................................please check! \033[0m"
-  fi
-}
-#获取sata_smart信息
-check_sata_info() {
-  declare -p sata_info &>/dev/null
-  if [ $? = 0 ]; then
-    for sata in ${sata_info}; do
-      smartctl -i /dev/${sata} >${path}/${sata}.log
-      cat ${path}/${sata}.log
+    for name in $2; do
+      smartctl -i /dev/${name} >${path}/${name}.log
+      cat ${path}/${name}.log
     done
     echo -e "\033[\e[1;32m get sata info success.........................................................please verify the result! \033[0m"
   else
@@ -42,9 +29,14 @@ check_pcie_info() {
     echo -e "\033[31m get pcie info failed.........................................................please check! \033[0m"
   fi
 }
-echo "请校验nvme硬盘信息："
-check_nvme_info
-echo "请校验sata硬盘信息："
-check_sata_info
-echo "请校验nvme_pcie速率信息："
-check_pcie_info
+if [ $1 = sata ]; then
+  echo "请校验sata硬盘信息："
+  check_info sata_info ${sata_info}
+elif [ $1 = nvme ]; then
+  echo "请校验nvme硬盘信息："
+  check_info nvme_info ${nvme_info}
+  echo "请校验nvme_pcie速率信息："
+  check_pcie_info
+else
+  echo -e "\033[31m 请输入正确的磁盘类型，如sata/nvme.........................................................please check! \033[0m"
+fi

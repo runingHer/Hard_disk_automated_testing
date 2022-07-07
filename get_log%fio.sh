@@ -1,7 +1,6 @@
 #!/bin/bash
 #提取fio日志脚本
 path=disktest/disk_performance
-result=$(cat ${path}/result)
 mkdir -p ${path}/get_result
 #提取seq日志
 extract_log() {
@@ -52,37 +51,26 @@ extract_rw_log() {
   done
 }
 #执行测试&输出测试结果
-while (true); do
-  if [ ${result} = PASS ]; then
-    read -p "请输入磁盘类型(nvme/sata)：" DISK
-    if [ $DISK = nvme ]; then
-      extract_log ${nvme_info} &>/dev/null
-      extract_rw_log ${nvme_info} &>/dev/null
-      if [ $? = 0 ]; then
-        echo -e "\033[\e[1;32m get log success,.........................................................PASS! \033[0m"
-        echo -e "\033[\e[1;32m get log success,.........................................................PASS! \033[0m" >>disktest/disk_result
-        break
-      else
-        echo -e "\033[31m get log fail,.........................................................please check! \033[0m"
-        echo -e "\033[31m get log fail,.........................................................please check! \033[0m" >>disktest/disk_result
-        break
-      fi
-    elif [ $DISK = sata ]; then
-      extract_log ${sata_info} &>/dev/null
-      extract_rw_log ${sata_info} &>/dev/null
-      if [ $? = 0 ]; then
-        echo -e "\033[\e[1;32m get log success,.........................................................PASS! \033[0m"
-        echo -e "\033[\e[1;32m get log success,.........................................................PASS! \033[0m" >>disktest/disk_result
-        break
-      else
-        echo -e "\033[31m get log fail,.........................................................please check! \033[0m"
-        echo -e "\033[31m get log fail,.........................................................please check! \033[0m" >>disktest/disk_result
-        break
-      fi
-    else
-      echo "请输入正确的磁盘类型！"
-    fi
+if [ $1 = nvme ]; then
+  extract_log ${nvme_info}
+  extract_rw_log ${nvme_info}
+  if [ $? = 0 ]; then
+    echo -e "\033[\e[1;32m get log success,.........................................................PASS! \033[0m"
+    echo -e "\033[\e[1;32m get log success,.........................................................PASS! \033[0m" >>disktest/disk_result
   else
-    echo "校验失败，请检查result.log!"
+    echo -e "\033[31m get log fail,.........................................................please check! \033[0m"
+    echo -e "\033[31m get log fail,.........................................................please check! \033[0m" >>disktest/disk_result
   fi
-done
+elif [ $1 = sata ]; then
+  extract_log ${sata_info}
+  extract_rw_log ${sata_info}
+  if [ $? = 0 ]; then
+    echo -e "\033[\e[1;32m get log success,.........................................................PASS! \033[0m"
+    echo -e "\033[\e[1;32m get log success,.........................................................PASS! \033[0m" >>disktest/disk_result
+  else
+    echo -e "\033[31m get log fail,.........................................................please check! \033[0m"
+    echo -e "\033[31m get log fail,.........................................................please check! \033[0m" >>disktest/disk_result
+  fi
+else
+  echo "请输入正确的磁盘类型！"
+fi

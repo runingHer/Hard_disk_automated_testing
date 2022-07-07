@@ -20,57 +20,39 @@ path_make() {
   make install
   cd ../../..
 }
-#SATA性能测试
-sata_test() {
-  for HDD in ${sata_info}; do
-    mkfs.xfs -f /dev/${HDD}
+#fio性能测试
+fio_test() {
+  for name in $1; do
+    mkfs.xfs -f /dev/${name}
     if [ $? = 0 ]; then
-      bash FIO安装包及脚本/fio性能测试/fio_steady.sh /dev/${HDD}
+      bash FIO安装包及脚本/fio性能测试/fio_steady.sh /dev/${name}
     else
-      echo "FAIL" > ${path}/result
-      echo -e "\033[31m performance test failed！.........................................................please check! \033[0m"
-      echo -e "\033[31m performance test failed！.........................................................please check! \033[0m" >> disktest/disk_result
-    fi
-  done
-}
-#NVME性能测试
-nvme_test() {
-  for NVME in ${nvme_info}; do
-    mkfs.xfs -f /dev/${NVME}
-    if [ $? = 0 ]; then
-      bash FIO安装包及脚本/fio性能测试/fio_steady.sh /dev/${NVME}
-    else
-      echo "FAIL" > ${path}/result
-      echo -e "\033[31m performance test failed！.........................................................please check! \033[0m"
-      echo -e "\033[31m performance test failed！.........................................................please check! \033[0m" >> disktest/disk_result
+      echo "FAIL" >${path}/result
+      echo -e "\033[31m performance test failed.........................................................please check! \033[0m"
+      echo -e "\033[31m performance test failed.........................................................please check! \033[0m" >>disktest/disk_result
     fi
   done
 }
 decompress
 #执行测试&输出测试结果
-while (true); do
-  #交互
-  read -p "请输入硬盘类型(例:nvme/sata)：" Disk
-  if [ ${Disk} = sata ]; then
-    path_make
-    sata_test
-    if [ $? = 0 ]; then
-      cp /sf/log/vs/vst_perf/* ${path}
-      echo "PASS" > ${path}/result
-      echo -e "\033[\e[1;32m performance test completed！.........................................................PASS! \033[0m"
-      echo -e "\033[\e[1;32m performance test completed！.........................................................PASS! \033[0m" >> disktest/disk_result
-    fi
-    break
-  elif [ ${Disk} = nvme ]; then
-    path_make
-    nvme_test
-    if [ $? = 0 ]; then
-      echo "PASS" > ${path}/result
-      echo -e "\033[\e[1;32m performance test completed！.........................................................PASS! \033[0m"
-      echo -e "\033[\e[1;32m performance test completed！.........................................................PASS! \033[0m" >> disktest/disk_result
-    fi
-    break
-  else
-    echo "请输入正确的硬盘类型！"
+if [ $1 = sata ]; then
+  path_make
+  fio_test ${sata_info}
+  if [ $? = 0 ]; then
+    cp /sf/log/vs/vst_perf/* ${path}
+    echo "PASS" >${path}/result
+    echo -e "\033[\e[1;32m performance test completed.........................................................PASS! \033[0m"
+    echo -e "\033[\e[1;32m performance test completed.........................................................PASS! \033[0m" >>disktest/disk_result
   fi
-done
+elif [ $1 = nvme ]; then
+  path_make
+  fio_test ${nvme_info}
+  if [ $? = 0 ]; then
+    cp /sf/log/vs/vst_perf/* ${path}
+    echo "PASS" >${path}/result
+    echo -e "\033[\e[1;32m performance test completed.........................................................PASS! \033[0m"
+    echo -e "\033[\e[1;32m performance test completed.........................................................PASS! \033[0m" >>disktest/disk_result
+  fi
+else
+  echo "请输入正确的硬盘类型！"
+fi

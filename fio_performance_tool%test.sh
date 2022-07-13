@@ -22,22 +22,22 @@ path_make() {
 }
 #fio性能测试
 fio_test() {
-  for name in $1; do
-    mkfs.xfs -f /dev/${name}
-    if [ $? = 0 ]; then
-      bash FIO安装包及脚本/fio性能测试/fio_steady.sh /dev/${name}
-    else
-      echo "FAIL" >${path}/result
-      echo -e "\033[31m performance test failed.........................................................please check! \033[0m"
-      echo -e "\033[31m performance test failed.........................................................please check! \033[0m" >>disktest/disk_result
-    fi
-  done
+  mkfs.xfs -f /dev/$1
+  if [ $? = 0 ]; then
+    bash FIO安装包及脚本/fio性能测试/fio_steady.sh /dev/$1
+  else
+    echo "FAIL" >${path}/result
+    echo -e "\033[31m ${1} performance test failed.........................................................please check! \033[0m"
+    echo -e "\033[31m ${1} performance test failed.........................................................please check! \033[0m" >>disktest/disk_result
+  fi
 }
 decompress
 #执行测试&输出测试结果
 if [ $1 = sata ]; then
   path_make
-  fio_test ${sata_info}
+  for traverse in ${sata_info}; do
+    fio_test ${traverse}
+  done
   if [ $? = 0 ]; then
     cp /sf/log/vs/vst_perf/* ${path}
     echo "PASS" >${path}/result
@@ -46,13 +46,13 @@ if [ $1 = sata ]; then
   fi
 elif [ $1 = nvme ]; then
   path_make
-  fio_test ${nvme_info}
+  for traverse in ${nvme_info}; do
+    fio_test ${traverse}
+  done
   if [ $? = 0 ]; then
     cp /sf/log/vs/vst_perf/* ${path}
     echo "PASS" >${path}/result
     echo -e "\033[\e[1;32m performance test completed.........................................................PASS! \033[0m"
     echo -e "\033[\e[1;32m performance test completed.........................................................PASS! \033[0m" >>disktest/disk_result
   fi
-else
-  echo "请输入正确的硬盘类型！"
 fi

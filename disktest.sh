@@ -1,5 +1,5 @@
 #!/bin/bash
-#硬盘自动化测试主脚本
+#硬盘测试开始
 #环境变量配置
 while (true); do
     read -p "需要对那种类型磁盘进行测试(sata/nvme)：" DISK

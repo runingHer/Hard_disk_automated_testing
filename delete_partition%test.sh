@@ -13,19 +13,21 @@ if [ $result = PASS ]; then
       echo "卸载分区成功"
       #删除分区
       for i in {1..3}; do
-        parted /dev/${disk_name} rm ${i}
-      done
+        parted -s /dev/${disk_name} rm ${i}
       if [ $? = 0 ]; then
+        lsblk
+        echo "删除分区成功"
         echo -e "\033[\e[1;32m Delete partition test passed!.........................................................please check the result! \033[0m"
         echo -e "\033[\e[1;32m Delete partition test passed!.........................................................please check the result! \033[0m" >>disktest/disk_result
       else
-        echo -e "\033[31m Delete partition test failed!.........................................................please check! \033[0m"
-        echo -e "\033[31m Delete partition test failed!.........................................................please check! \033[0m" >>disktest/disk_result
+        echo "删除分区失败"
       fi
+      done
     else
       echo "卸载分区失败,请检查"
     fi
   done
 else
-  echo "测试失败,请检查!"
+  echo -e "\033[31m Delete partition test failed!.........................................................please check! \033[0m"
+  echo -e "\033[31m Delete partition test failed!.........................................................please check! \033[0m" >>disktest/disk_result
 fi

@@ -7,10 +7,8 @@ lsscsi >${path}/lsscsi.log
 check_info() {
   declare -p $1 &>/dev/null
   if [ $? = 0 ]; then
-    for name in $2; do
-      smartctl -i /dev/${name} >${path}/${name}.log
-      cat ${path}/${name}.log
-    done
+    smartctl -i /dev/${2} >${path}/${2}.log
+    cat ${path}/${2}.log
     echo -e "\033[\e[1;32m get sata info success.........................................................please verify the result! \033[0m"
   else
     echo -e "\033[31m get sata info failed.........................................................please check! \033[0m"
@@ -31,10 +29,14 @@ check_pcie_info() {
 }
 if [ $1 = sata ]; then
   echo "请校验sata硬盘信息："
-  check_info sata_info ${sata_info}
+  for traverse in ${sata_info}; do
+    check_info sata_info ${traverse}
+  done
 elif [ $1 = nvme ]; then
   echo "请校验nvme硬盘信息："
-  check_info nvme_info ${nvme_info}
+  for traverse in ${nvme_info}; do
+    check_info nvme_info ${traverse}
+  done
   echo "请校验nvme_pcie速率信息："
   check_pcie_info
 else

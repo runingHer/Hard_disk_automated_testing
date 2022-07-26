@@ -22,7 +22,7 @@ if [ $1 = sata ]; then
   if [ $? = 0 ]; then
     echo -e "\033[\e[1;32m Stress test begins.........................................................PASS! \033[0m"
     echo -e "\033[\e[1;32m Stress test begins.........................................................PASS! \033[0m" >>disktest/disk_result
-  filename
+  fi
 elif [ $1 = nvme ]; then
   for traverse in ${nvme_info}; do
     fio_stress_test ${traverse}

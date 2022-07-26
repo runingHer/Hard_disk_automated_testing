@@ -65,8 +65,6 @@ if [ $? = 0 ]; then
   #提取fio测试结果
   bash get_log%fio.sh ${DISK}
 
-  #删除环境变量及安装包
-  delete_all
   echo -e "\033[\e[1;32m The hard disk test is completed.........................................................please verify the result! \033[0m"
   echo -e "\033[\e[1;32m The hard disk test is completed.........................................................please verify the result! \033[0m" >>disktest/disk_result
 else
